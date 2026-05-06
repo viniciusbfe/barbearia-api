@@ -24,17 +24,19 @@ public class Agendamento {
     private Barbeiro barbeiro;
     @ManyToMany
     private Set<Servico> servicos = new HashSet<>();
+    private Double valorTotal;
 
     public Agendamento() {
     }
 
-    public Agendamento(Integer id, LocalDateTime dataHora, LocalDateTime dataHoraFim,StatusAgendamento status, Cliente cliente, Barbeiro barbeiro){
+    public Agendamento(Integer id, LocalDateTime dataHora, LocalDateTime dataHoraFim,StatusAgendamento status, Cliente cliente, Barbeiro barbeiro, Double valorTotal){
         this.id = id;
         this.dataHora = dataHora;
         this.dataHoraFim = dataHoraFim;
         this.status = status;
         this.cliente = cliente;
         this.barbeiro = barbeiro;
+        this.valorTotal = valorTotal;
     }
 
     public Integer getId() {
@@ -87,5 +89,13 @@ public class Agendamento {
 
     public Set<Servico> getServicos() {
         return servicos;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }

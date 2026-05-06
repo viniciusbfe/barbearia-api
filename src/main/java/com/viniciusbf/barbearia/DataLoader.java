@@ -60,7 +60,7 @@ public class DataLoader implements CommandLineRunner {
 
         LocalDateTime inicio = LocalDateTime.of(2025, 5, 10, 9, 0);
         LocalDateTime fim = inicio.plusMinutes(s1.getDuracao() + s3.getDuracao());
-        Agendamento aa = new Agendamento(null, inicio, fim, StatusAgendamento.AGENDADO, c1, b1);
+        Agendamento aa = new Agendamento(null, inicio, fim, StatusAgendamento.AGENDADO, c1, b1, (s1.getPreco()) + s3.getPreco());
         aa.getServicos().add(s1);
         aa.getServicos().add(s3);
         agendamentoRepository.save(aa);
