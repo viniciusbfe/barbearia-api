@@ -1,16 +1,12 @@
 package com.viniciusbf.barbearia;
 
-import com.viniciusbf.barbearia.entities.Barbeiro;
-import com.viniciusbf.barbearia.entities.Cliente;
-import com.viniciusbf.barbearia.entities.Especialidade;
-import com.viniciusbf.barbearia.entities.Servico;
-import com.viniciusbf.barbearia.repositories.BarbeiroRepository;
-import com.viniciusbf.barbearia.repositories.ClienteRepository;
-import com.viniciusbf.barbearia.repositories.EspecialidadeRepository;
-import com.viniciusbf.barbearia.repositories.ServicoRepository;
+import com.viniciusbf.barbearia.entities.*;
+import com.viniciusbf.barbearia.entities.enums.StatusAgendamento;
+import com.viniciusbf.barbearia.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Component
@@ -20,12 +16,14 @@ public class DataLoader implements CommandLineRunner {
     private final ClienteRepository clienteRepository;
     private final EspecialidadeRepository especialidadeRepository;
     private final ServicoRepository servicoRepository;
+    private final AgendamentoRepository agendamentoRepository;
 
-    public DataLoader(BarbeiroRepository barbeiroRepository, ClienteRepository clienteRepository, EspecialidadeRepository especialidadeRepository, ServicoRepository servicoRepository){
+    public DataLoader(BarbeiroRepository barbeiroRepository, ClienteRepository clienteRepository, EspecialidadeRepository especialidadeRepository, ServicoRepository servicoRepository, AgendamentoRepository agendamentoRepository){
         this.barbeiroRepository = barbeiroRepository;
         this.clienteRepository = clienteRepository;
         this.especialidadeRepository = especialidadeRepository;
         this.servicoRepository = servicoRepository;
+        this.agendamentoRepository = agendamentoRepository;
     }
 
     @Override
@@ -59,6 +57,14 @@ public class DataLoader implements CommandLineRunner {
         b3.getEspecialidades().add(e4);
         b3.getEspecialidades().add(e5);
         barbeiroRepository.saveAll(Arrays.asList(b1, b2, b3));
+
+        LocalDateTime inicio = LocalDateTime.of(2025, 5, 10, 9, 0);
+        LocalDateTime fim = inicio.plusMinutes(s1.getDuracao() + s3.getDuracao());
+        Agendamento aa = new Agendamento(null, inicio, fim, StatusAgendamento.AGENDADO, c1, b1);
+        aa.getServicos().add(s1);
+        aa.getServicos().add(s3);
+        agendamentoRepository.save(aa);
+
     }
 
 }
