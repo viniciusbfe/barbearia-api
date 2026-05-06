@@ -11,12 +11,12 @@ public class Servico {
     private Integer id;
     private String nome;
     private Integer duracao;
-    private Double preco;
+    private double preco;
 
     public Servico(){
     }
 
-    public Servico(Integer id, String nome, Integer duracao, Double preco) {
+    public Servico(Integer id, String nome, Integer duracao, double preco) {
         this.id = id;
         this.nome = nome;
         this.duracao = duracao;
@@ -47,7 +47,7 @@ public class Servico {
         this.duracao = duracao;
     }
 
-    public Double getPreco() {
+    public double getPreco() {
         return preco;
     }
 
