@@ -1,13 +1,13 @@
 package com.viniciusbf.barbearia.controllers;
 
 import com.viniciusbf.barbearia.dtos.AgendamentoRequestDTO;
+import com.viniciusbf.barbearia.dtos.AgendamentoUpdateDTO;
 import com.viniciusbf.barbearia.entities.Agendamento;
 import com.viniciusbf.barbearia.services.AgendamentoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/agendamentos")
@@ -32,5 +32,16 @@ public class AgendamentoController {
     @PostMapping
     public ResponseEntity<Agendamento> create(@RequestBody AgendamentoRequestDTO agendamentoRequestDTO){
         return ResponseEntity.ok(agendamentoService.create(agendamentoRequestDTO));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        agendamentoService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Agendamento> update(@PathVariable Integer id, @RequestBody AgendamentoUpdateDTO agendamentoUpdateDTO) {
+        return ResponseEntity.ok(agendamentoService.update(id, agendamentoUpdateDTO));
     }
 }

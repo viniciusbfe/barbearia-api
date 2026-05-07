@@ -1,5 +1,6 @@
 package com.viniciusbf.barbearia.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.viniciusbf.barbearia.entities.enums.StatusAgendamento;
 import jakarta.persistence.*;
 
@@ -14,7 +15,9 @@ public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataHora;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataHoraFim;
     @Enumerated(EnumType.STRING)
     private StatusAgendamento status;
