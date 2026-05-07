@@ -49,7 +49,8 @@ public class DataLoader implements CommandLineRunner {
         Servico s1 = new Servico(null, "Servico 1", 30, 50);
         Servico s2 = new Servico(null, "Servico 2", 10, 100);
         Servico s3 = new Servico(null, "Servico 3", 50, 57);
-        servicoRepository.saveAll(Arrays.asList(s1, s2, s3));
+        Servico s4 = new Servico(null, "Servico 4", 100, 10000);
+        servicoRepository.saveAll(Arrays.asList(s1, s2, s3, s4));
 
         b1.getEspecialidades().add(e1);
         b1.getEspecialidades().add(e2);

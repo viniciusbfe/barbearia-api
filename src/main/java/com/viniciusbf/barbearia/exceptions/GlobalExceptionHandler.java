@@ -21,4 +21,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(409).body(error);
 
     }
+
+    @ExceptionHandler(ServicoEmUsoException.class)
+    public ResponseEntity<ApiError> servicoEmUso(ServicoEmUsoException e){
+        ApiError error = new ApiError(409, e.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(409).body(error);
+    }
 }
