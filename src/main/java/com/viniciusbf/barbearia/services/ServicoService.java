@@ -1,5 +1,6 @@
 package com.viniciusbf.barbearia.services;
 
+import com.viniciusbf.barbearia.dtos.ServicoRequestDTO;
 import com.viniciusbf.barbearia.dtos.ServicoUpdateDTO;
 import com.viniciusbf.barbearia.entities.Servico;
 import com.viniciusbf.barbearia.exceptions.ResourceNotFoundException;
@@ -28,6 +29,12 @@ public class ServicoService {
 
     public Servico getById(Integer id){
         return servicoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Servico " + id + " não encontrado."));
+    }
+
+    public Servico create(ServicoRequestDTO servicoRequestDTO){
+        Servico servico = new Servico(null, servicoRequestDTO.getNome(), servicoRequestDTO.getDuracao(), servicoRequestDTO.getPreco());
+        servicoRepository.save(servico);
+        return servico;
     }
 
     public Servico update(Integer id, ServicoUpdateDTO servicoUpdateDTO){

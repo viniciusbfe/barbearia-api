@@ -46,10 +46,10 @@ public class DataLoader implements CommandLineRunner {
         Especialidade e5 = new Especialidade(null, "Especialidade 5");
         especialidadeRepository.saveAll(Arrays.asList(e1, e2, e3, e4, e5));
 
-        Servico s1 = new Servico(null, "Servico 1", 30, 50);
-        Servico s2 = new Servico(null, "Servico 2", 10, 100);
-        Servico s3 = new Servico(null, "Servico 3", 50, 57);
-        Servico s4 = new Servico(null, "Servico 4", 100, 10000);
+        Servico s1 = new Servico(null, "Servico 1", 30, 50.0);
+        Servico s2 = new Servico(null, "Servico 2", 10, 100.0);
+        Servico s3 = new Servico(null, "Servico 3", 50, 57.0);
+        Servico s4 = new Servico(null, "Servico 4", 100, 10000.0);
         servicoRepository.saveAll(Arrays.asList(s1, s2, s3, s4));
 
         b1.getEspecialidades().add(e1);

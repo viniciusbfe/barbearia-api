@@ -27,4 +27,11 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError(409, e.getMessage(), LocalDateTime.now());
         return ResponseEntity.status(409).body(error);
     }
+
+    @ExceptionHandler(BarbeiroEmUsoException.class)
+    public ResponseEntity<ApiError> barbeiroEmUso(BarbeiroEmUsoException e){
+        ApiError error = new ApiError(409, e.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(409).body(error);
+    }
+
 }

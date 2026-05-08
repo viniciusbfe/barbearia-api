@@ -1,12 +1,11 @@
 package com.viniciusbf.barbearia.controllers;
 
+import com.viniciusbf.barbearia.dtos.BarbeiroRequestDTO;
+import com.viniciusbf.barbearia.dtos.BarbeiroUpdateDTO;
 import com.viniciusbf.barbearia.entities.Barbeiro;
 import com.viniciusbf.barbearia.services.BarbeiroService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,4 +29,19 @@ public class BarbeiroController {
         return ResponseEntity.ok(barbeiroService.getById(id));
     }
 
+    @PostMapping
+    public ResponseEntity<Barbeiro> create(@RequestBody BarbeiroRequestDTO barbeiroRequestDTO){
+        return ResponseEntity.ok(barbeiroService.create(barbeiroRequestDTO));
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Barbeiro> update(@PathVariable Integer id, @RequestBody BarbeiroUpdateDTO barbeiroUpdateDTO){
+        return ResponseEntity.ok(barbeiroService.update(id, barbeiroUpdateDTO));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        barbeiroService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

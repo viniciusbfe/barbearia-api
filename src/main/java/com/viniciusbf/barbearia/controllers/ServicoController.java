@@ -1,5 +1,6 @@
 package com.viniciusbf.barbearia.controllers;
 
+import com.viniciusbf.barbearia.dtos.ServicoRequestDTO;
 import com.viniciusbf.barbearia.dtos.ServicoUpdateDTO;
 import com.viniciusbf.barbearia.entities.Servico;
 import com.viniciusbf.barbearia.services.ServicoService;
@@ -26,6 +27,11 @@ public class ServicoController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Servico> getById(@PathVariable Integer id){
         return ResponseEntity.ok(servicoService.getById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Servico> create(@RequestBody ServicoRequestDTO servicoRequestDTO){
+        return ResponseEntity.ok(servicoService.create(servicoRequestDTO));
     }
 
     @PutMapping(value = "/{id}")
