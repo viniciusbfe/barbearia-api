@@ -29,14 +29,6 @@ public class DisponibilidadeService {
         this.agendamentoRepository = agendamentoRepository;
     }
 
-    public List<Disponibilidade> getAllByBarberiroId(Integer id){
-        return disponibilidadeRepository.findByBarbeiroId(id);
-    }
-
-    public Disponibilidade getById(Integer id){
-        return disponibilidadeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Barbeiro " + id + " não encontrado."));
-    }
-
     public Disponibilidade create(DisponibilidadeRequestDTO disponibilidadeRequestDTO){
         Barbeiro barbeiro = barbeiroRepository.findById(disponibilidadeRequestDTO.getBarbeiroId()).orElseThrow(() -> new ResourceNotFoundException("Barbeiro " + disponibilidadeRequestDTO.getBarbeiroId() + " não encontrado."));
         Disponibilidade disponibilidade = new Disponibilidade(null, barbeiro, disponibilidadeRequestDTO.getDiaSemana(), disponibilidadeRequestDTO.getHoraInicio(), disponibilidadeRequestDTO.getHoraFim());
