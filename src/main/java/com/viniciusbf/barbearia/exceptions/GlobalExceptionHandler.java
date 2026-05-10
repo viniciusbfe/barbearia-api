@@ -46,4 +46,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(409).body(error);
     }
 
+    @ExceptionHandler(OutsideWorkingHoursException.class)
+    public ResponseEntity<ApiError> horarioForaDeExpediente(OutsideWorkingHoursException e){
+        ApiError error = new ApiError(400, e.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(400).body(error);
+    }
+
 }

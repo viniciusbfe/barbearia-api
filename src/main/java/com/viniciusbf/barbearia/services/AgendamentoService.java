@@ -2,20 +2,17 @@ package com.viniciusbf.barbearia.services;
 
 import com.viniciusbf.barbearia.dtos.AgendamentoRequestDTO;
 import com.viniciusbf.barbearia.dtos.AgendamentoUpdateDTO;
-import com.viniciusbf.barbearia.entities.Agendamento;
-import com.viniciusbf.barbearia.entities.Barbeiro;
-import com.viniciusbf.barbearia.entities.Cliente;
-import com.viniciusbf.barbearia.entities.Servico;
+import com.viniciusbf.barbearia.entities.*;
+import com.viniciusbf.barbearia.entities.enums.DiaSemana;
 import com.viniciusbf.barbearia.entities.enums.StatusAgendamento;
+import com.viniciusbf.barbearia.exceptions.OutsideWorkingHoursException;
 import com.viniciusbf.barbearia.exceptions.ScheduleConflictException;
 import com.viniciusbf.barbearia.exceptions.ResourceNotFoundException;
-import com.viniciusbf.barbearia.repositories.AgendamentoRepository;
-import com.viniciusbf.barbearia.repositories.BarbeiroRepository;
-import com.viniciusbf.barbearia.repositories.ClienteRepository;
-import com.viniciusbf.barbearia.repositories.ServicoRepository;
+import com.viniciusbf.barbearia.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,12 +24,15 @@ public class AgendamentoService {
     private final ServicoRepository servicoRepository;
     private final ClienteRepository clienteRepository;
     private final BarbeiroRepository barbeiroRepository;
+    private final DisponibilidadeRepository disponibilidadeRepository;
 
-    public AgendamentoService(AgendamentoRepository agendamentoRepository, ServicoRepository servicoRepository, ClienteRepository clienteRepository, BarbeiroRepository barbeiroRepository){
+
+    public AgendamentoService(AgendamentoRepository agendamentoRepository, ServicoRepository servicoRepository, ClienteRepository clienteRepository, BarbeiroRepository barbeiroRepository, DisponibilidadeRepository disponibilidadeRepository){
         this.agendamentoRepository = agendamentoRepository;
         this.servicoRepository = servicoRepository;
         this.clienteRepository = clienteRepository;
         this.barbeiroRepository = barbeiroRepository;
+        this.disponibilidadeRepository = disponibilidadeRepository;
     }
 
     public List<Agendamento> getAll(){
@@ -63,7 +63,18 @@ public class AgendamentoService {
         Agendamento agendamento = new Agendamento(null,agendamentoRequestDTO.getDataHora(), dataHoraFim, StatusAgendamento.AGUARDANDO, cliente, barbeiro, valorTotal);
         agendamento.getServicos().addAll(servicos);
 
-       if (agendamentoRepository.existeConflito(agendamentoRequestDTO.getBarbeiroId(), agendamentoRequestDTO.getDataHora(), dataHoraFim)){
+        DiaSemana diaSemana = DiaSemana.fromDayOfWeek(agendamentoRequestDTO.getDataHora().getDayOfWeek());
+
+        Disponibilidade disponibilidade = disponibilidadeRepository
+                .findByBarbeiroIdAndDiaSemana(agendamentoRequestDTO.getBarbeiroId(), diaSemana)
+                .orElseThrow(() -> new ResourceNotFoundException("Barbeiro não trabalha nesse dia."));
+
+        if (agendamentoRequestDTO.getDataHora().toLocalTime().isBefore(disponibilidade.getHoraInicio()) ||
+                dataHoraFim.toLocalTime().isAfter(disponibilidade.getHoraFim())) {
+            throw new OutsideWorkingHoursException("Horário fora da janela de trabalho do barbeiro.");
+        }
+
+        if (agendamentoRepository.existeConflito(agendamentoRequestDTO.getBarbeiroId(), agendamentoRequestDTO.getDataHora(), dataHoraFim)){
            throw new ScheduleConflictException("Conlfito de horários na agenda do barbeiro, horário indisponível.");
        }
 
