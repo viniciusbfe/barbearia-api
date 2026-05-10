@@ -7,7 +7,7 @@ import com.viniciusbf.barbearia.entities.Barbeiro;
 import com.viniciusbf.barbearia.entities.Cliente;
 import com.viniciusbf.barbearia.entities.Servico;
 import com.viniciusbf.barbearia.entities.enums.StatusAgendamento;
-import com.viniciusbf.barbearia.exceptions.ConflitoHorarioExcpetion;
+import com.viniciusbf.barbearia.exceptions.ScheduleConflictException;
 import com.viniciusbf.barbearia.exceptions.ResourceNotFoundException;
 import com.viniciusbf.barbearia.repositories.AgendamentoRepository;
 import com.viniciusbf.barbearia.repositories.BarbeiroRepository;
@@ -64,7 +64,7 @@ public class AgendamentoService {
         agendamento.getServicos().addAll(servicos);
 
        if (agendamentoRepository.existeConflito(agendamentoRequestDTO.getBarbeiroId(), agendamentoRequestDTO.getDataHora(), dataHoraFim)){
-           throw new ConflitoHorarioExcpetion("Conlfito de horários na agenda do barbeiro, horário indisponível.");
+           throw new ScheduleConflictException("Conlfito de horários na agenda do barbeiro, horário indisponível.");
        }
 
         agendamento.setStatus(StatusAgendamento.AGENDADO);

@@ -1,12 +1,10 @@
 package com.viniciusbf.barbearia.controllers;
 
+import com.viniciusbf.barbearia.dtos.EspecialidadeRequestDTO;
 import com.viniciusbf.barbearia.entities.Especialidade;
 import com.viniciusbf.barbearia.services.EspecialidadeService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +26,16 @@ public class EspecialidadeController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Especialidade> getById(@PathVariable Integer id){
         return ResponseEntity.ok(especialidadeService.getById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Especialidade> create(@RequestBody EspecialidadeRequestDTO especialidadeRequestDTO){
+        return ResponseEntity.ok(especialidadeService.create(especialidadeRequestDTO));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        especialidadeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

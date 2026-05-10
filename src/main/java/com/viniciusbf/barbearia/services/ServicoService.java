@@ -4,10 +4,9 @@ import com.viniciusbf.barbearia.dtos.ServicoRequestDTO;
 import com.viniciusbf.barbearia.dtos.ServicoUpdateDTO;
 import com.viniciusbf.barbearia.entities.Servico;
 import com.viniciusbf.barbearia.exceptions.ResourceNotFoundException;
-import com.viniciusbf.barbearia.exceptions.ServicoEmUsoException;
+import com.viniciusbf.barbearia.exceptions.ServiceInUseException;
 import com.viniciusbf.barbearia.repositories.AgendamentoRepository;
 import com.viniciusbf.barbearia.repositories.ServicoRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,7 +51,7 @@ public class ServicoService {
     public void delete(Integer id){
         if (servicoRepository.existsById(id)){
             if (agendamentoRepository.existeAgendamentoComServico(id)){
-                throw new ServicoEmUsoException("O serviço id " + id + " está atrelado a um agendamento e não pode ser excluído.");
+                throw new ServiceInUseException("O serviço id " + id + " está atrelado a um agendamento e não pode ser excluído.");
             } else {
                 servicoRepository.deleteById(id);
             }

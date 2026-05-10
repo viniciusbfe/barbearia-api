@@ -15,21 +15,33 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(error);
     }
 
-    @ExceptionHandler(ConflitoHorarioExcpetion.class)
-    public ResponseEntity<ApiError> conflitoHorario(ConflitoHorarioExcpetion e){
+    @ExceptionHandler(ScheduleConflictException.class)
+    public ResponseEntity<ApiError> conflitoHorario(ScheduleConflictException e){
         ApiError error = new ApiError(409, e.getMessage(), LocalDateTime.now());
         return ResponseEntity.status(409).body(error);
 
     }
 
-    @ExceptionHandler(ServicoEmUsoException.class)
-    public ResponseEntity<ApiError> servicoEmUso(ServicoEmUsoException e){
+    @ExceptionHandler(ServiceInUseException.class)
+    public ResponseEntity<ApiError> servicoEmUso(ServiceInUseException e){
         ApiError error = new ApiError(409, e.getMessage(), LocalDateTime.now());
         return ResponseEntity.status(409).body(error);
     }
 
-    @ExceptionHandler(BarbeiroEmUsoException.class)
-    public ResponseEntity<ApiError> barbeiroEmUso(BarbeiroEmUsoException e){
+    @ExceptionHandler(BarberInUseException.class)
+    public ResponseEntity<ApiError> barbeiroEmUso(BarberInUseException e){
+        ApiError error = new ApiError(409, e.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(409).body(error);
+    }
+
+    @ExceptionHandler(ClientInUseException.class)
+    public ResponseEntity<ApiError> clienteEmUso(ClientInUseException e){
+        ApiError error = new ApiError(409, e.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(409).body(error);
+    }
+
+    @ExceptionHandler(SpecialtyInUseUsoException.class)
+    public ResponseEntity<ApiError> clienteEmUso(SpecialtyInUseUsoException e){
         ApiError error = new ApiError(409, e.getMessage(), LocalDateTime.now());
         return ResponseEntity.status(409).body(error);
     }

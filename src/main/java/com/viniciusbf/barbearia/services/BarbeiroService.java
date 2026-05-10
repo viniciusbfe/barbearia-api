@@ -4,7 +4,7 @@ import com.viniciusbf.barbearia.dtos.BarbeiroRequestDTO;
 import com.viniciusbf.barbearia.dtos.BarbeiroUpdateDTO;
 import com.viniciusbf.barbearia.entities.Barbeiro;
 import com.viniciusbf.barbearia.entities.Especialidade;
-import com.viniciusbf.barbearia.exceptions.BarbeiroEmUsoException;
+import com.viniciusbf.barbearia.exceptions.BarberInUseException;
 import com.viniciusbf.barbearia.exceptions.ResourceNotFoundException;
 import com.viniciusbf.barbearia.repositories.BarbeiroRepository;
 import com.viniciusbf.barbearia.repositories.EspecialidadeRepository;
@@ -60,7 +60,7 @@ public class BarbeiroService {
             if (!barbeiroRepository.existeAgendamentoComBarbeiro(id)){
                 barbeiroRepository.deleteById(id);
             } else {
-                throw new BarbeiroEmUsoException("O barbeiro " + id + " está agendado e não pode ser deletado.");
+                throw new BarberInUseException("O barbeiro " + id + " está agendado e não pode ser deletado.");
             }
         } else {
             throw new ResourceNotFoundException("Barbeiro " + id + " não encontrado.");
