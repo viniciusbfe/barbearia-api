@@ -4,6 +4,7 @@ import com.viniciusbf.barbearia.entities.*;
 import com.viniciusbf.barbearia.entities.enums.DiaSemana;
 import com.viniciusbf.barbearia.entities.enums.StatusAgendamento;
 import com.viniciusbf.barbearia.repositories.*;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
         Barbeiro b1 = new Barbeiro(null, "Barbeiro 1");
