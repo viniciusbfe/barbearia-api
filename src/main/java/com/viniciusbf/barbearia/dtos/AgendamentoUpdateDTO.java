@@ -1,6 +1,8 @@
 package com.viniciusbf.barbearia.dtos;
 
 import com.viniciusbf.barbearia.entities.enums.StatusAgendamento;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

@@ -1,9 +1,14 @@
 package com.viniciusbf.barbearia.dtos;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ServicoRequestDTO {
 
+    @NotNull
     private String nome;
+    @NotNull
     private Integer duracao;
+    @NotNull
     private Double preco;
 
     public ServicoRequestDTO() {

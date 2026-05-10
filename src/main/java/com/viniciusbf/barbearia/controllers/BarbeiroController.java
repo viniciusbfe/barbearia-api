@@ -4,6 +4,7 @@ import com.viniciusbf.barbearia.dtos.BarbeiroRequestDTO;
 import com.viniciusbf.barbearia.dtos.BarbeiroUpdateDTO;
 import com.viniciusbf.barbearia.entities.Barbeiro;
 import com.viniciusbf.barbearia.services.BarbeiroService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class BarbeiroController {
     }
 
     @PostMapping
-    public ResponseEntity<Barbeiro> create(@RequestBody BarbeiroRequestDTO barbeiroRequestDTO){
+    public ResponseEntity<Barbeiro> create(@Valid @RequestBody BarbeiroRequestDTO barbeiroRequestDTO){
         return ResponseEntity.ok(barbeiroService.create(barbeiroRequestDTO));
     }
 

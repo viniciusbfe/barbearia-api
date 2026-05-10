@@ -4,6 +4,7 @@ import com.viniciusbf.barbearia.dtos.AgendamentoRequestDTO;
 import com.viniciusbf.barbearia.dtos.AgendamentoUpdateDTO;
 import com.viniciusbf.barbearia.entities.Agendamento;
 import com.viniciusbf.barbearia.services.AgendamentoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class AgendamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<Agendamento> create(@RequestBody AgendamentoRequestDTO agendamentoRequestDTO){
+    public ResponseEntity<Agendamento> create(@Valid @RequestBody AgendamentoRequestDTO agendamentoRequestDTO){
         return ResponseEntity.ok(agendamentoService.create(agendamentoRequestDTO));
     }
 

@@ -1,14 +1,19 @@
 package com.viniciusbf.barbearia.dtos;
 
 import com.viniciusbf.barbearia.entities.enums.DiaSemana;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
 
 public class DisponibilidadeRequestDTO {
 
+    @NotNull
     private Integer barbeiroId;
+    @NotNull
     private DiaSemana diaSemana;
+    @NotNull
     private LocalTime horaInicio;
+    @NotNull
     private LocalTime horaFim;
 
     public DisponibilidadeRequestDTO() {

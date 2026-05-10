@@ -1,11 +1,17 @@
 package com.viniciusbf.barbearia.dtos;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class BarbeiroRequestDTO {
 
+    @NotNull
     private String nome;
+    @NotNull
+    @NotEmpty
     private Set<Integer> especialidades = new HashSet<>();
 
     public BarbeiroRequestDTO(String nome) {

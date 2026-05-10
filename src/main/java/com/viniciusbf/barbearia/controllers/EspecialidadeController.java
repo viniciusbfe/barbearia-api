@@ -3,6 +3,7 @@ package com.viniciusbf.barbearia.controllers;
 import com.viniciusbf.barbearia.dtos.EspecialidadeRequestDTO;
 import com.viniciusbf.barbearia.entities.Especialidade;
 import com.viniciusbf.barbearia.services.EspecialidadeService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class EspecialidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<Especialidade> create(@RequestBody EspecialidadeRequestDTO especialidadeRequestDTO){
+    public ResponseEntity<Especialidade> create(@Valid @RequestBody EspecialidadeRequestDTO especialidadeRequestDTO){
         return ResponseEntity.ok(especialidadeService.create(especialidadeRequestDTO));
     }
 

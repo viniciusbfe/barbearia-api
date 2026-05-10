@@ -1,10 +1,12 @@
 package com.viniciusbf.barbearia.exceptions;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -49,6 +51,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OutsideWorkingHoursException.class)
     public ResponseEntity<ApiError> horarioForaDeExpediente(OutsideWorkingHoursException e){
         ApiError error = new ApiError(400, e.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(400).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException e) {
+        String mensagem = e.getBindingResult().getFieldErrors()
+                .stream()
+                .map(f -> f.getField() + ": " + f.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        ApiError error = new ApiError(400, mensagem, LocalDateTime.now());
         return ResponseEntity.status(400).body(error);
     }
 

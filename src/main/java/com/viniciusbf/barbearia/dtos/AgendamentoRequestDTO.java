@@ -1,13 +1,22 @@
 package com.viniciusbf.barbearia.dtos;
 
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
 public class AgendamentoRequestDTO {
 
+    @NotNull
     private Integer barbeiroId;
+    @NotNull
     private Integer clienteId;
+    @NotNull
     private LocalDateTime dataHora;
+    @NotNull
+    @NotEmpty
     private Set<Integer> servicoIds;
 
     public Integer getBarbeiroId() {

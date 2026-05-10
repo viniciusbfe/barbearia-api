@@ -4,6 +4,7 @@ import com.viniciusbf.barbearia.dtos.ClienteRequestDTO;
 import com.viniciusbf.barbearia.dtos.ClienteUpdateDTO;
 import com.viniciusbf.barbearia.entities.Cliente;
 import com.viniciusbf.barbearia.services.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> create(@RequestBody ClienteRequestDTO clienteRequestDTO){
+    public ResponseEntity<Cliente> create(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO){
         return ResponseEntity.ok(clienteService.create(clienteRequestDTO));
     }
 

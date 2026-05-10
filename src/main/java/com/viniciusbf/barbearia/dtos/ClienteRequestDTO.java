@@ -1,9 +1,14 @@
 package com.viniciusbf.barbearia.dtos;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ClienteRequestDTO {
 
+    @NotNull
     private String nome;
+    @NotNull
     private String telefone;
+    @NotNull
     private String email;
 
     public ClienteRequestDTO() {
