@@ -10,8 +10,9 @@ import java.util.Optional;
 
 public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade, Integer> {
 
-    List<Disponibilidade> findByBarbeiroId(Integer barbeiroId);
     Optional<Disponibilidade> findByBarbeiroIdAndDiaSemana(Integer barbeiroId, DiaSemana diaSemana);
+    boolean existsByBarbeiroId(Integer barbeiroId);
+
 
 
 }

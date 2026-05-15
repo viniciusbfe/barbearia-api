@@ -1,14 +1,18 @@
 package com.viniciusbf.barbearia.dtos;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public class ServicoRequestDTO {
 
     @NotNull
     private String nome;
+    @Min(1)
     @NotNull
     private Integer duracao;
     @NotNull
+    @DecimalMin("0.01")
     private Double preco;
 
     public ServicoRequestDTO() {

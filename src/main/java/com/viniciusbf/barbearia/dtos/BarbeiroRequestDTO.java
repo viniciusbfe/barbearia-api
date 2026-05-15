@@ -11,7 +11,6 @@ public class BarbeiroRequestDTO {
     @NotNull
     private String nome;
     @NotNull
-    @NotEmpty
     private Set<Integer> especialidades = new HashSet<>();
 
     public BarbeiroRequestDTO(String nome) {

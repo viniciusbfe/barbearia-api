@@ -7,6 +7,7 @@ import com.viniciusbf.barbearia.entities.Especialidade;
 import com.viniciusbf.barbearia.exceptions.BarberInUseException;
 import com.viniciusbf.barbearia.exceptions.ResourceNotFoundException;
 import com.viniciusbf.barbearia.repositories.BarbeiroRepository;
+import com.viniciusbf.barbearia.repositories.DisponibilidadeRepository;
 import com.viniciusbf.barbearia.repositories.EspecialidadeRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,12 @@ public class BarbeiroService {
 
     private final BarbeiroRepository barbeiroRepository;
     private final EspecialidadeRepository especialidadeRepository;
+    private final DisponibilidadeRepository disponibilidadeRepository;
 
-    public BarbeiroService(BarbeiroRepository barbeiroRepository, EspecialidadeRepository especialidadeRepository){
+    public BarbeiroService(BarbeiroRepository barbeiroRepository, EspecialidadeRepository especialidadeRepository, DisponibilidadeRepository disponibilidadeRepository){
         this.barbeiroRepository = barbeiroRepository;
         this.especialidadeRepository = especialidadeRepository;
+        this.disponibilidadeRepository = disponibilidadeRepository;
     }
 
     public List<Barbeiro> getAll(){
@@ -58,7 +61,11 @@ public class BarbeiroService {
     public void delete(Integer id){
         if (barbeiroRepository.existsById(id)){
             if (!barbeiroRepository.existeAgendamentoComBarbeiro(id)){
-                barbeiroRepository.deleteById(id);
+                if (disponibilidadeRepository.existsByBarbeiroId(id)) {
+                    throw new BarberInUseException("Barbeiro possui disponibilidades cadastradas e não pode ser excluído.");
+                } else {
+                    barbeiroRepository.deleteById(id);
+                }
             } else {
                 throw new BarberInUseException("O barbeiro " + id + " está agendado e não pode ser deletado.");
             }
