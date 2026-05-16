@@ -10,6 +10,7 @@ import com.viniciusbf.barbearia.repositories.AgendamentoRepository;
 import com.viniciusbf.barbearia.repositories.BarbeiroRepository;
 import com.viniciusbf.barbearia.repositories.DisponibilidadeRepository;
 import com.viniciusbf.barbearia.repositories.EspecialidadeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,6 +62,7 @@ public class BarbeiroService {
         return barbeiroRepository.save(barbeiro);
     }
 
+    @Transactional
     public void delete(Integer id) {
         if (!barbeiroRepository.existsById(id)) {
             throw new ResourceNotFoundException("Barbeiro " + id + " não encontrado.");
