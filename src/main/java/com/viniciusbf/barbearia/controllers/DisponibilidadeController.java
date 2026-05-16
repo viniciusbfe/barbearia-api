@@ -1,6 +1,8 @@
 package com.viniciusbf.barbearia.controllers;
 
+import com.viniciusbf.barbearia.dtos.DisponibilidadeRequestDTO;
 import com.viniciusbf.barbearia.entities.Disponibilidade;
+import com.viniciusbf.barbearia.entities.enums.DiaSemana;
 import com.viniciusbf.barbearia.services.DisponibilidadeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +25,15 @@ public class DisponibilidadeController {
     @GetMapping(value = "/barbeiro/{id}")
     public ResponseEntity<List<LocalTime>> getDisponibilidadeByBarberId(@PathVariable Integer id, @RequestParam LocalDate data){
         return ResponseEntity.ok(disponibilidadeService.getSlotsDisponiveis(id, data));
+    }
+
+    @GetMapping("/barbeiro/{id}/dias")
+    public ResponseEntity<List<DiaSemana>> getDiasTrabalhados(@PathVariable Integer id) {
+        return ResponseEntity.ok(disponibilidadeService.getDiasTrabalhadosByBarbeiroId(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Disponibilidade> create(@RequestBody DisponibilidadeRequestDTO disponibilidadeRequestDTO){
+        return ResponseEntity.ok(disponibilidadeService.create(disponibilidadeRequestDTO));
     }
 }

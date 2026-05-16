@@ -12,6 +12,8 @@ public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade
 
     Optional<Disponibilidade> findByBarbeiroIdAndDiaSemana(Integer barbeiroId, DiaSemana diaSemana);
     boolean existsByBarbeiroId(Integer barbeiroId);
+    List<Disponibilidade> findByBarbeiroId(Integer barbeiroId);
+
 
 
 
