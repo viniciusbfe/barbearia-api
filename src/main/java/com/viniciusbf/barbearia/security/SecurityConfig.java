@@ -31,13 +31,15 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
 
             config.setAllowedOrigins(List.of(
-                    "https://barbearia-front-hhfe6d9zs-viniciusbfes-projects.vercel.app",
+                    "https://barbearia-front-fszlr4og0-viniciusbfes-projects.vercel.app",
                     "https://barbearia-front.vercel.app",
                     "http://localhost:5173"
             ));
 
             config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
             config.setAllowedHeaders(List.of("*"));
+
+            // IMPORTANTE: pode causar problema se usar JWT depois
             config.setAllowCredentials(true);
 
             return config;
