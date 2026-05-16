@@ -48,18 +48,21 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers(HttpMethod.OPTIONS, "/**")
-                        .permitAll()
+                        // libera preflight do browser
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                        // rotas públicas
                         .requestMatchers(
                                 "/auth/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
-                        )
-                        .permitAll()
+                        ).permitAll()
 
-                        .anyRequest()
-                        .authenticated()
+                        // LIBERA PARA TESTE (REMOVE DEPOIS SE QUISER SEGURAR)
+                        .requestMatchers("/barbeiros/**").permitAll()
+
+                        // tudo que não estiver acima exige login
+                        .anyRequest().authenticated()
                 )
 
                 .addFilterBefore(
