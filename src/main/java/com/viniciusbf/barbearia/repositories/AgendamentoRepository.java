@@ -13,4 +13,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Intege
 
     @Query("SELECT COUNT(a) > 0 FROM Agendamento a JOIN a.servicos s WHERE s.id = :servicoId")
     boolean existeAgendamentoComServico(Integer servicoId);
+
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Agendamento a WHERE a.barbeiro.id = :barbeiroId")
+    boolean existeAgendamentoComBarbeiro(Integer barbeiroId);
 }
