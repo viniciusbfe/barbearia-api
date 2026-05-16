@@ -14,10 +14,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
+/*@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+   /* private final JwtService jwtService;
     private final UsuarioService usuarioService;
 
     public JwtAuthFilter(JwtService jwtService, UsuarioService usuarioService) {
@@ -55,4 +55,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         return request.getServletPath().startsWith("/auth");
     }
-}
+}*/
