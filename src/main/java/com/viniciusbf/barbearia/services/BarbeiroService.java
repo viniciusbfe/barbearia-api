@@ -6,6 +6,7 @@ import com.viniciusbf.barbearia.entities.Barbeiro;
 import com.viniciusbf.barbearia.entities.Especialidade;
 import com.viniciusbf.barbearia.exceptions.BarberInUseException;
 import com.viniciusbf.barbearia.exceptions.ResourceNotFoundException;
+import com.viniciusbf.barbearia.repositories.AgendamentoRepository;
 import com.viniciusbf.barbearia.repositories.BarbeiroRepository;
 import com.viniciusbf.barbearia.repositories.DisponibilidadeRepository;
 import com.viniciusbf.barbearia.repositories.EspecialidadeRepository;
@@ -19,11 +20,13 @@ public class BarbeiroService {
     private final BarbeiroRepository barbeiroRepository;
     private final EspecialidadeRepository especialidadeRepository;
     private final DisponibilidadeRepository disponibilidadeRepository;
+    private final AgendamentoRepository agendamentoRepository;
 
-    public BarbeiroService(BarbeiroRepository barbeiroRepository, EspecialidadeRepository especialidadeRepository, DisponibilidadeRepository disponibilidadeRepository){
+    public BarbeiroService(BarbeiroRepository barbeiroRepository, EspecialidadeRepository especialidadeRepository, DisponibilidadeRepository disponibilidadeRepository, AgendamentoRepository agendamentoRepository){
         this.barbeiroRepository = barbeiroRepository;
         this.especialidadeRepository = especialidadeRepository;
         this.disponibilidadeRepository = disponibilidadeRepository;
+        this.agendamentoRepository = agendamentoRepository;
     }
 
     public List<Barbeiro> getAll(){
@@ -58,21 +61,15 @@ public class BarbeiroService {
         return barbeiroRepository.save(barbeiro);
     }
 
-    public void delete(Integer id){
-        if (barbeiroRepository.existsById(id)){
-            if (!barbeiroRepository.existeAgendamentoComBarbeiro(id)){
-                if (disponibilidadeRepository.existsByBarbeiroId(id)) {
-                    throw new BarberInUseException("Barbeiro possui disponibilidades cadastradas e não pode ser excluído.");
-                } else {
-                    barbeiroRepository.deleteById(id);
-                }
-            } else {
-                throw new BarberInUseException("O barbeiro " + id + " está agendado e não pode ser deletado.");
-            }
-        } else {
+    public void delete(Integer id) {
+        if (!barbeiroRepository.existsById(id)) {
             throw new ResourceNotFoundException("Barbeiro " + id + " não encontrado.");
         }
-
+        if (agendamentoRepository.existeAgendamentoComBarbeiro(id)) {
+            throw new BarberInUseException("Barbeiro está vinculado a um agendamento e não pode ser excluído.");
+        }
+        disponibilidadeRepository.deleteByBarbeiroId(id);
+        barbeiroRepository.deleteById(id);
     }
 
 }
