@@ -51,6 +51,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedOrigins(List.of(
                     "https://barbearia-front-fszlr4og0-viniciusbfes-projects.vercel.app",
+                    "https://barbearia-front-7y1ar2vdd-viniciusbfes-projects.vercel.app",
                     "http://localhost:5173"
             ));
             config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
