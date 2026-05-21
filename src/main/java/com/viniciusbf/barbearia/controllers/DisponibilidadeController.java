@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -22,18 +21,21 @@ public class DisponibilidadeController {
         this.disponibilidadeService = disponibilidadeService;
     }
 
+    @PostMapping
+    public ResponseEntity<Disponibilidade> create(@RequestBody DisponibilidadeRequestDTO disponibilidadeRequestDTO){
+        return ResponseEntity.ok(disponibilidadeService.create(disponibilidadeRequestDTO));
+    }
+
     @GetMapping(value = "/barbeiro/{id}")
-    public ResponseEntity<List<LocalTime>> getDisponibilidadeByBarberId(@PathVariable Integer id, @RequestParam LocalDate data){
-        return ResponseEntity.ok(disponibilidadeService.getSlotsDisponiveis(id, data));
+    public ResponseEntity<List<LocalTime>> getDisponibilidadeByBarberId(
+            @PathVariable Integer id,
+            @RequestParam LocalDate data,
+            @RequestParam(required = false) List<Integer> servicoIds) {
+        return ResponseEntity.ok(disponibilidadeService.getSlotsDisponiveis(id, data, servicoIds));
     }
 
     @GetMapping("/barbeiro/{id}/dias")
     public ResponseEntity<List<DiaSemana>> getDiasTrabalhados(@PathVariable Integer id) {
         return ResponseEntity.ok(disponibilidadeService.getDiasTrabalhadosByBarbeiroId(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<Disponibilidade> create(@RequestBody DisponibilidadeRequestDTO disponibilidadeRequestDTO){
-        return ResponseEntity.ok(disponibilidadeService.create(disponibilidadeRequestDTO));
     }
 }

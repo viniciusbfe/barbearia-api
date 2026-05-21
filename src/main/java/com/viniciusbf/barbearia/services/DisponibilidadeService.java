@@ -3,11 +3,13 @@ package com.viniciusbf.barbearia.services;
 import com.viniciusbf.barbearia.dtos.DisponibilidadeRequestDTO;
 import com.viniciusbf.barbearia.entities.Barbeiro;
 import com.viniciusbf.barbearia.entities.Disponibilidade;
+import com.viniciusbf.barbearia.entities.Servico;
 import com.viniciusbf.barbearia.entities.enums.DiaSemana;
 import com.viniciusbf.barbearia.exceptions.ResourceNotFoundException;
 import com.viniciusbf.barbearia.repositories.AgendamentoRepository;
 import com.viniciusbf.barbearia.repositories.BarbeiroRepository;
 import com.viniciusbf.barbearia.repositories.DisponibilidadeRepository;
+import com.viniciusbf.barbearia.repositories.ServicoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,11 +25,13 @@ public class DisponibilidadeService {
     private final DisponibilidadeRepository disponibilidadeRepository;
     private final BarbeiroRepository barbeiroRepository;
     private final AgendamentoRepository agendamentoRepository;
+    private final ServicoRepository servicoRepository;
 
-    public DisponibilidadeService(DisponibilidadeRepository disponibilidadeRepository, BarbeiroRepository barbeiroRepository, AgendamentoRepository agendamentoRepository){
+    public DisponibilidadeService(DisponibilidadeRepository disponibilidadeRepository, BarbeiroRepository barbeiroRepository, AgendamentoRepository agendamentoRepository, ServicoRepository servicoRepository){
         this.disponibilidadeRepository = disponibilidadeRepository;
         this.barbeiroRepository = barbeiroRepository;
         this.agendamentoRepository = agendamentoRepository;
+        this.servicoRepository = servicoRepository;
     }
 
     public Disponibilidade create(DisponibilidadeRequestDTO disponibilidadeRequestDTO){
@@ -36,21 +40,35 @@ public class DisponibilidadeService {
         return disponibilidadeRepository.save(disponibilidade);
     }
 
-    public List<LocalTime> getSlotsDisponiveis(Integer barberId, LocalDate data){
+    public List<LocalTime> getSlotsDisponiveis(Integer barberId, LocalDate data, List<Integer> servicoIds) {
         DiaSemana diaSemana = DiaSemana.fromDayOfWeek(data.getDayOfWeek());
-        Disponibilidade disponibilidade = disponibilidadeRepository.findByBarbeiroIdAndDiaSemana(barberId, diaSemana).orElseThrow(() -> new ResourceNotFoundException("Barbeiro não trabalha esse dia."));
+        Disponibilidade disponibilidade = disponibilidadeRepository
+                .findByBarbeiroIdAndDiaSemana(barberId, diaSemana)
+                .orElseThrow(() -> new ResourceNotFoundException("Barbeiro não trabalha esse dia."));
 
+        int duracaoTotal = 0;
+        if (servicoIds != null && !servicoIds.isEmpty()) {
+            for (Integer servicoId : servicoIds) {
+                Servico servico = servicoRepository.findById(servicoId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado."));
+                duracaoTotal += servico.getDuracao();
+            }
+        } else {
+            duracaoTotal = 30;
+        }
+
+        final int duracao = duracaoTotal;
         List<LocalTime> slots = new ArrayList<>();
         LocalTime slot = disponibilidade.getHoraInicio();
 
-        while (slot.plusMinutes(30).compareTo(disponibilidade.getHoraFim()) <= 0){
+        while (slot.plusMinutes(duracao).compareTo(disponibilidade.getHoraFim()) <= 0) {
             slots.add(slot);
             slot = slot.plusMinutes(30);
         }
 
         slots.removeIf(s -> {
             LocalDateTime inicio = LocalDateTime.of(data, s);
-            LocalDateTime fim = inicio.plusMinutes(30);
+            LocalDateTime fim = inicio.plusMinutes(duracao);
             return agendamentoRepository.existeConflito(barberId, inicio, fim);
         });
 
